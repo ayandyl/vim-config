@@ -102,6 +102,9 @@ vim_setup \
   preservim/nerdtree \
   jlanzarotta/bufexplorer \
   ctrlpvim/ctrlp.vim \
+  shougo/deoplete.nvim \
+    roxma/nvim-yarp \
+    roxma/vim-hug-neovim-rpc \
   tpope/vim-surround \
   tpope/vim-repeat \
   easymotion/vim-easymotion \

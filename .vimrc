@@ -301,6 +301,9 @@ let g:airline#extensions#wordcount#enabled=0
 " no need to remind me about all the unix utf8 files
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
+" deoplete.nvim
+let g:deoplete#enable_at_startup = 1
+
 " markdown
 let g:markdown_enable_spell_checking = 0      " remove spell check
 let g:markdown_enable_input_abbreviations = 0 " remove ":-)" -> ":smile:"
