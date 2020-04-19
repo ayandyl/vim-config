@@ -1,5 +1,74 @@
-set nocompatible " must be first line
+" NOTE - expects neovim
+
 scriptencoding utf-8
+
+" ====================
+" install plugins
+" ====================
+
+call plug#begin(stdpath('data') . '/plugged')
+
+Plug 'junegunn/vim-plug'
+
+" IDE
+Plug 'preservim/nerdtree'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'ctrlpvim/ctrlp.vim'
+
+" UI
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'jalvesaq/southernlights'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" edits
+Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-abolish'
+Plug 'preservim/nerdcommenter'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-fugitive'
+Plug 'rhysd/conflict-marker.vim'
+Plug 'mhinz/vim-signify'
+
+" languages
+Plug 'scrooloose/syntastic'
+
+" js
+Plug 'elzr/vim-json'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'jparise/vim-graphql'
+Plug 'joukevandermaas/vim-ember-hbs'
+
+" html/css
+Plug 'vim-scripts/HTML-AutoCloseTag'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'luochen1990/rainbow'
+Plug 'digitaltoad/vim-pug'
+
+" ruby
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+
+" others
+Plug 'rhysd/vim-crystal'
+Plug 'cespare/vim-toml'
+Plug 'gabrielelana/vim-markdown'
+Plug 'ctiml/haproxy-syntax-vim'
+
+call plug#end()
+
+" see if a plugin exists
+function! PlugLoaded(name)
+  return (
+    \ has_key(g:plugs, a:name) &&
+    \ isdirectory(g:plugs[a:name].dir) &&
+    \ stridx(&rtp, substitute(g:plugs[a:name].dir, '/$', '', '')) >= 0)
+endfunction
 
 " ====================
 " editing
@@ -9,27 +78,24 @@ let mapleader = ',' " use ',' for <leader>
 
 set nospell
 
-set virtualedit=onemore                        " cursor one beyond last character
-set backspace=indent,eol,start
-set showmatch                                  " show matching brackets/parens
-set cursorline                                 " highlight current line
-set colorcolumn=80                             " show 80-char indicator
-set incsearch                                  " find as you type search
-set hlsearch                                   " highlight serach terms
-set ignorecase                                 " case insensitive search
-set smartcase                                  " case sensitive when uppercase present
-set magic                                      " magic on for regex
-set wildmenu                                   " show list instead of just completing
-set wildmode=list:longest,full                 " <Tab> completion
-set whichwrap=b,s,h,l,<,>,[,]                  " backspace and cursor keys wrap too
-set scrolljump=5                               " lines to scroll when cursor leaves screen
-set scrolloff=3                                " minimum lines to keep above and below cursor
+set virtualedit=onemore        " cursor one beyond last character
+set showmatch                  " show matching brackets/parens
+set cursorline                 " highlight current line
+set colorcolumn=80             " show 80-char indicator
+set ignorecase                 " case insensitive search
+set smartcase                  " case sensitive when uppercase present
+set magic                      " magic on for regex
+set wildmode=list:longest,full " <Tab> completion
+set whichwrap=b,s,h,l,<,>,[,]  " backspace and cursor keys wrap too
+set scrolljump=5               " lines to scroll when cursor leaves screen
+set scrolloff=3                " minimum lines to keep above and below cursor
 set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
-set wrap linebreak
+
+" highlight problematic whitespace
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
 
 set smartindent
-set expandtab smarttab
+set expandtab
 set shiftwidth=2 tabstop=2 softtabstop=2
 set nojoinspaces " do not insert two spaces after punctuation on a join (J)
 set splitbelow   " new split windows to the below of current
@@ -128,6 +194,10 @@ set hidden " allow buffer switching without saving
 
 " turn off backups, we have source control
 set nobackup nowb noswapfile
+" but do allow many undos
+set undofile
+set undolevels=1000
+set undoreload=10000
 
 " from spf13
 " End/Start of line motion keys act relative to row/wrap width in the
@@ -165,27 +235,20 @@ vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
 " from spf13
 " accidental shift key fixes
 if has("user_commands")
-    command! -bang -nargs=* -complete=file E e<bang> <args>
-    command! -bang -nargs=* -complete=file W w<bang> <args>
-    command! -bang -nargs=* -complete=file Wq wq<bang> <args>
-    command! -bang -nargs=* -complete=file WQ wq<bang> <args>
-    command! -bang Wa wa<bang>
-    command! -bang WA wa<bang>
-    command! -bang Q q<bang>
-    command! -bang QA qa<bang>
-    command! -bang Qa qa<bang>
+  command! -bang -nargs=* -complete=file E e<bang> <args>
+  command! -bang -nargs=* -complete=file W w<bang> <args>
+  command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+  command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+  command! -bang Wa wa<bang>
+  command! -bang WA wa<bang>
+  command! -bang Q q<bang>
+  command! -bang QA qa<bang>
+  command! -bang Qa qa<bang>
 endif
 cmap Tabe tabe
 
 " yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
-
-set history=1000 " store lots of history (default 50!)
-if has('persistent_undo')
-  set undofile
-  set undolevels=1000
-  set undoreload=10000
-endif
 
 " '.', '#', '-' are end of word designators
 set iskeyword-=.
@@ -203,8 +266,6 @@ augroup END
 " remember info about open buffers on close
 set viminfo^=%
 
-set autoread " auto read a file if changed externally
-
 " ====================
 " UI
 " ====================
@@ -213,45 +274,19 @@ set autoread " auto read a file if changed externally
 set mouse-=a
 set mousehide
 
-set background=dark
-
 try
-  let g:solarized_termcolors = 256
-  let g:solarized_termtrans = 1
-  let g:solarized_contrast = "normal"
-  let g:solarized_visibility = "normal"
-  colorscheme solarized
-  "colorscheme southernlights
+  colorscheme southernlights
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
 set shortmess=aoOstTS " shorter messages, avoids 'hit enter'
 set viewoptions=cursor,folds,options,slash,unix
 
-set tabpagemax=15
 set showmode       " display the current mode
 
 set linespace=0    " no extra space between rows
 set winminheight=0 " windows can be 0 line high
 set number         " line numbers on
-
-" from spf13
-if has('cmdline_info')
-  set ruler
-  set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
-  set showcmd
-endif
-
-" from spf13
-if has('statusline')
-  set laststatus=2
-  set statusline=%<%f\                     " Filename
-  set statusline+=%w%h%m%r                 " Options
-  set statusline+=%{fugitive#statusline()} " Git Hotness
-  set statusline+=\ [%{&ff}/%Y]            " Filetype
-  set statusline+=\ [%{getcwd()}]          " Current dir
-  set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-endif
 
 " ====================
 " plugins
@@ -264,19 +299,25 @@ let NERDTreeChDirMode = 0
 let NERDTreeQuitOnOpen = 1
 let NERDTreeShowHidden = 1
 
-" toggle NERDTree
-noremap <leader>nn :NERDTreeToggle<cr>:silent NERDTreeMirror<cr>
-" locate current file in NERDTree
-noremap <leader>nf :NERDTreeFind<cr>
+if PlugLoaded('nerdtree')
+  " toggle NERDTree
+  noremap <leader>nn :NERDTreeToggle<cr>:silent NERDTreeMirror<cr>
+  " locate current file in NERDTree
+  noremap <leader>nf :NERDTreeFind<cr>
 
-augroup nerdtree
-  autocmd!
-  " open NERDTree on start, if no file specified
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd vimenter * if !argc() | NERDTree | endif
-  " close vim if only NERDTree left
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-augroup END
+  augroup nerdtree
+    autocmd!
+    " open NERDTree on start, if no file specified
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd vimenter * if !argc() | NERDTree | endif
+    " close vim if only NERDTree left
+    autocmd bufenter *
+      \ if (winnr("$") == 1
+        \ && exists("b:NERDTreeType")
+        \ && b:NERDTreeType == "primary") |
+      \ q | endif
+  augroup END
+endif
 
 " CtrlP
 let g:ctrlp_custom_ignore = {
@@ -303,6 +344,16 @@ let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
 " deoplete.nvim
 let g:deoplete#enable_at_startup = 1
+if PlugLoaded('deoplete.nvim')
+  function! s:check_backspace() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~ '\s'
+  endfunction
+  inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_backspace() ? "\<TAB>" :
+    \ deoplete#manual_complete()
+endif
 
 " markdown
 let g:markdown_enable_spell_checking = 0      " remove spell check
@@ -314,20 +365,12 @@ let g:vim_json_syntax_conceal = 0 " do not conceal ""'s
 " rainbow (html tag etc rainbow highlighting)
 let g:rainbow_active = 1
 
-" vim-indent-guides
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-
 " ====================
 " languages
 " ====================
 
 " filetype should default to unix, but dos more practical than mac
 set ffs=unix,dos,mac
-
-filetype plugin indent on " automatically detect file types
-syntax on
 
 " Find merge conflict markers
 " DEPRECATED conflict-marker.vim has [x and ]x
