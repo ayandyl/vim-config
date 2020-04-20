@@ -120,6 +120,11 @@ noremap <C-k> <C-W>k
 noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
+nnoremap <leader>tn :tabnew<cr>
+nnoremap <leader>tt :tabnext<cr>
+nnoremap <leader>tp :tabprev<cr>
+nnoremap <leader>tc :tabclose<cr>
+
 " wrapped lines
 noremap j gj
 noremap k gk
