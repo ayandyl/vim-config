@@ -32,6 +32,7 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-fugitive'
 Plug 'rhysd/conflict-marker.vim'
 Plug 'mhinz/vim-signify'
+Plug 'jiangmiao/auto-pairs'
 
 " languages
 Plug 'scrooloose/syntastic'
