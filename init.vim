@@ -336,7 +336,7 @@ let g:ctrlp_prompt_mappings = {
   \ }
 
 if executable('ag') " use ag in CtrlP, fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --ignore .git/ -g ""'
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
