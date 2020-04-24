@@ -342,7 +342,6 @@ if executable('ag') " use ag in CtrlP, fast and respects .gitignore
 endif
 
 " airline
-let g:airline_theme = 'solarized'
 " wordcount is bugged, throws undefined variables; plus not needed anyway
 let g:airline#extensions#wordcount#enabled=0
 " no need to remind me about all the unix utf8 files
