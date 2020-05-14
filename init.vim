@@ -17,7 +17,6 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 " UI
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'jalvesaq/southernlights'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -281,7 +280,7 @@ set mouse-=a
 set mousehide
 
 try
-  colorscheme southernlights
+  colorscheme solarized8
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -342,6 +341,7 @@ if executable('ag') " use ag in CtrlP, fast and respects .gitignore
 endif
 
 " airline
+let g:airline_theme = 'tomorrow'
 " wordcount is bugged, throws undefined variables; plus not needed anyway
 let g:airline#extensions#wordcount#enabled=0
 " no need to remind me about all the unix utf8 files
